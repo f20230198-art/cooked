@@ -766,17 +766,3 @@ After step 4, fully learned. No more flooding needed.
 └─────────────────────────────────────────────────────────────┘
 ```
 
----
-
-## 17. Study Plan
-
-1. **Today:** Sections 0–3. Especially MAC vs IP and the cross-LAN routing trace — that's the conceptual backbone.
-2. **Tomorrow:** Sections 4–9 (Ethernet basics, frame format, domains).
-3. **Day 3:** Sections 10–14 (switches, self-learning, VLANs). Do the worked examples in section 15 by hand.
-4. **Day 4 (exam day):** Cheat sheet only.
-
-If anything is fuzzy, ask:
-- "Walk me through the cross-LAN routing again with different IPs"
-- "Make me 3 self-learning switch problems"
-- "Explain 802.1Q tagging step by step"
-- "Quiz me on broadcast vs collision domains"

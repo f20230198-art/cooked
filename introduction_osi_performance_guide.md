@@ -902,16 +902,7 @@ $$T_{trans} = \frac{1024}{10^8} = 10.24 \times 10^{-6} \text{ s} = \mathbf{10.24
 
 ---
 
-# 22. Study Plan
-
-1. **Day 1:** Sections 0–11 (basics, topologies, internet structure). Memorize the 4 topologies' pros/cons.
-2. **Day 2:** Sections 12–18 (OSI model + addresses). MEMORIZE the 7 layers in order with their PDUs and protocols.
-3. **Day 3:** Section 19 (performance metrics) + solve Problems 1–4 by hand.
-4. **Day 4:** Solve Problems 5–9 (the bigger numericals). Glance at cheat sheet.
-
----
-
-## 23. The "MUST KNOW" Items for Exam
+## 22. The "MUST KNOW" Items for Exam
 
 If you only memorize 5 things from this chapter:
 

@@ -828,17 +828,3 @@ Code rate = k/n = **4/7 ≈ 0.57**. Means 57% of transmitted bits are useful dat
 └─────────────────────────────────────────────────────────────┘
 ```
 
----
-
-## 24. Study Plan
-
-1. **Day 1:** Sections 0–9 (link layer basics, error types, redundancy concept)
-2. **Day 2:** Sections 10–15 (block coding, parity in detail, code rate)
-3. **Day 3:** Sections 16–20 (CRC + Checksum — these are the high-yield exam topics)
-4. **Day 4:** Solve all worked problems in section 22 by hand. Glance at cheat sheet.
-
-If anything's fuzzy, ask:
-- "Show me CRC division step-by-step with different numbers"
-- "Walk me through Internet checksum with a real example bit-by-bit"
-- "Explain why parity misses even-bit errors with a diagram"
-- "Quiz me on detection vs correction"

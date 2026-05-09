@@ -755,17 +755,3 @@ $$\text{Throughput} = \frac{1000 \text{ bits}}{440\,\mu s} \approx 2.27 \text{ M
 └─────────────────────────────────────────────────────┘
 ```
 
----
-
-# 15. Study Plan (4 days)
-
-1. **Day 1 (today):** Read sections 0–4 with PPT open. Just *follow the story*.
-2. **Day 2:** Read 5–11. Draw the diagrams yourself by hand (huge memory boost).
-3. **Day 3:** Solve the 4 numericals in section 13 *without looking*. Then check.
-4. **Day 4 (exam day):** Just glance at section 14. Done.
-
-**If anything is fuzzy, ask me to:**
-- "Expand backoff with a worked example"
-- "Make 3 more practice numericals"
-- "Draw the timing diagram for CSMA/CA + RTS-CTS"
-- "Quiz me on this"
