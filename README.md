@@ -20,7 +20,7 @@ Plain-English explanations, ASCII diagrams, formulas, and worked numerical probl
 
 | File | Topic |
 |---|---|
-| [tutorial1_mcq_answers.md](tutorial1_mcq_answers.md) | 60 MCQs on basics, OSI, addresses |
+| [tutorial1_mcq_answers.md](tutorial1_mcq_answers.md) | 61 MCQs on basics, OSI, addresses |
 | [tutorials_2_3_solutions.md](tutorials_2_3_solutions.md) | Layered protocols, encapsulation, store-and-forward, cut-through, TDM |
 | [tutorial4_solutions.md](tutorial4_solutions.md) | CRC encoding/decoding, Internet checksum, circuit vs packet bytes |
 | [tutorials_5_6_solutions.md](tutorials_5_6_solutions.md) | ALOHA throughput, CSMA/CD min frame, backoff, collision timing |

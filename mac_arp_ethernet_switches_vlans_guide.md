@@ -6,7 +6,7 @@
 
 ## 0. The Big Picture — Why This Chapter Exists
 
-You already know that computers talk over a shared channel using MAC protocols (CSMA/CD etc.). But two questions remain:
+Computers talk over a shared channel using medium-access protocols (CSMA/CD etc., covered fully in Chapter 5). But two questions remain even before that:
 
 1. **Who is the message for?** → We need addresses.
 2. **How do those addresses connect to IP addresses (which is what apps actually use)?** → That's ARP.
@@ -222,7 +222,7 @@ If you remember only one thing from this chapter, make it that.
 ## 4. What is Ethernet? (📑 Slides 14–15)
 
 - Ethernet = the most widely used LAN technology, invented in 1970s at Xerox
-- A system to connect computers → form a local network → using protocols to control simultaneous transmission (the MAC stuff from last chapter)
+- A system to connect computers → form a local network → using protocols to control simultaneous transmission (medium-access protocols, covered in Chapter 5)
 - Standardized as **IEEE 802.3**
 
 ### IEEE 802 architecture (📑 Slide 16: "IEEE Ethernet")
@@ -382,7 +382,7 @@ This is the actual structure of bytes on the wire:
 | **CRC** | 4 bytes | Cyclic Redundancy Check. Receiver recomputes; if mismatch → drop frame |
 
 ### Why the 46-byte minimum?
-Because total frame must be ≥ 64 bytes (the CSMA/CD min frame size we calculated last chapter):
+Because total frame must be ≥ 64 bytes (the CSMA/CD min frame size — derived in Chapter 5 from the rule "min frame ≥ 2·T_p·Bandwidth"):
 - 6 (dst) + 6 (src) + 2 (type) + 46 (data) + 4 (CRC) = **64 bytes** ✓
 
 ### Maximum frame size: 1518 bytes (or 1500 byte payload)

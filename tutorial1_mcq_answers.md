@@ -1,4 +1,4 @@
-# Tutorial 1 — MCQ Answers (60 Questions)
+# Tutorial 1 — MCQ Answers (61 Questions)
 
 > **Chapter:** Introduction, OSI Model & Performance (Chapter 1)
 > **Reference guide:** [introduction_osi_performance_guide.md](introduction_osi_performance_guide.md)
@@ -176,6 +176,10 @@
 **Q36. ICMPv6 includes _______.**
 **Answer: D) a and b (IGMP and ARP)**
 > In IPv6, ICMPv6 absorbs the functionality of IGMP and ARP.
+>
+> **ICMP** (Internet Control Message Protocol) — sends error/diagnostic messages (e.g., `ping`, "destination unreachable").
+> **IGMP** (Internet Group Management Protocol) — manages multicast group membership.
+> **ARP** (Address Resolution Protocol) — maps an IP address to a MAC address on the same LAN.
 
 **Q37. The ______ layer is responsible for moving frames from one hop (node) to the next.**
 **Answer: B) Data Link**
@@ -196,6 +200,10 @@
 **Q40. The Internetworking Protocol (IP) is a ________ protocol.**
 **Answer: D) None of the above**
 > IP is **unreliable AND connectionless** — neither (a) reliable nor (b) connection-oriented.
+>
+> **Connectionless:** sender just sends; no handshake or session is set up first (e.g., IP, UDP).
+> **Connection-oriented:** sender and receiver agree on a session before data flows (e.g., TCP's 3-way handshake).
+> **Unreliable:** the protocol does not guarantee delivery or in-order arrival; higher layers must handle loss.
 
 **Q41. _______ is a process-to-process protocol that adds only port addresses, checksum error control, and length information.**
 **Answer: B) UDP**
@@ -307,6 +315,7 @@
 ## Score Tracker
 
 - [ ] Total attempted: ___ / 61
+
 - [ ] Correct: ___
 - [ ] Topics to revisit: ___
 

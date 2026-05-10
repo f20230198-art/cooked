@@ -159,101 +159,52 @@ A correctly-received codeword always divides evenly by G. **Any non-zero remaind
 
 ### Step 2 — Mod-2 division of `01011100000` by `1101`
 
-```
-                  0 1 1 0 1 0 0 1
-              ─────────────────────
-   1 1 0 1 │ 0 1 0 1 1 1 0 0 0 0 0
-              (leading 0, skip)
-              1 0 1 1 1 0 0 0 0 0
-              1 1 0 1
-              ─────────
-              0 1 1 0 1 0 0 0 0 0
-                1 1 0 1
-                ─────────
-                0 0 0 0 0 0 0 0 0
-                  (continue, all zeros)
-                  
-                  ... pulling down remaining bits ...
-                  
-                  Remainder = 0 0 1
-```
-
-Working through carefully step-by-step:
+The leading 0 of the dividend contributes a 0 in the quotient and shifts in the next bit, so we effectively divide `1011100000` (10 bits) by `1101`:
 
 ```
-Dividend: 01011100 000
-Divisor:  1101
+   1 0 1 1 1 0 0 0 0 0
+   1 1 0 1                ← XOR (leading bit was 1)
+   ─────────────
+   0 1 1 0 1 0 0 0 0 0
+     1 1 0 1              ← XOR (next leading bit is 1)
+     ─────────────
+     0 0 0 0 0 0 0 0 0    ← from here all bits are 0
+                            no further XOR needed
 
-Position 1: leading bit 0 → quotient bit 0, no XOR
-Position 2: 1011 ÷ 1101 → quotient bit 0 (since 1011 < 1101 lex)... 
-
-Let me redo more carefully — tracking the working register:
-
-  Start:      0 1 0 1 1 1 0 0 0 0 0
-  Skip 0 →    1 0 1 1 1 0 0 0 0 0
-  
-  1 0 1 1   ← top 4 bits, MSB = 1 → XOR with 1101
-  ⊕ 1 1 0 1
-  ─────────
-  0 1 1 0   bring down next bit (1) → 1 1 0 1
-  
-  1 1 0 1   ← MSB = 1 → XOR with 1101
-  ⊕ 1 1 0 1
-  ─────────
-  0 0 0 0   bring down next bit (0) → 0 0 0 0
-  
-  0 0 0 0   MSB = 0 → no XOR; bring down (0) → 0 0 0 0
-  0 0 0 0   MSB = 0 → no XOR; bring down (0) → 0 0 0 0
-  0 0 0 0   MSB = 0 → no XOR; bring down (0) → 0 0 0 0
-  
-  Remainder = 0 0 1   (last 3 bits)
+   Remainder = 0 0 0  (last 3 bits)
 ```
 
-Hmm, let me recheck — after exhausting bits, I should have exactly 3 remainder bits.
+✅ **CRC bits = `000`** — the data happens to already be a multiple of G(x).
 
-Actually working it out fully:
-- M = `01011100` → after appending 3 zeros = `01011100000`
-- Total 11 bits, divisor 4 bits → quotient 8 bits, remainder 3 bits
+### Transmitted message: `01011100 000`
 
-After careful division: **Remainder = `001`**
+> **Sanity check using polynomial arithmetic:**
+> M(x)·x³ = x⁹ + x⁷ + x⁶ + x⁵.
+> Reducing each term mod G(x) = x³ + x² + 1:
+> x⁹ ≡ x², x⁷ ≡ 1, x⁶ ≡ x²+x, x⁵ ≡ x+1.
+> Sum ≡ x² + 1 + (x² + x) + (x + 1) = 2x² + 2x + 2 ≡ **0** (mod 2). ✓
 
-### Transmitted message: `01011100 001`
+### Step 3 — Receiver gets `11011100000` (leftmost flipped)
 
-### Step 3 — Receiver gets `11011100001` (leftmost flipped)
+Flipping bit position 10 adds x¹⁰ to the codeword. Since the original codeword had remainder 0, the new remainder = x¹⁰ mod G(x):
 
-Divide `11011100001` by `1101`:
+x¹⁰ ≡ x · x⁹ ≡ x · x² = x³ ≡ x² + 1 → bits **`101`**.
+
+So the receiver computes:
 
 ```
-  1 1 0 1 1 1 0 0 0 0 1
-  
-  1 1 0 1 ⊕ 1 1 0 1 = 0 0 0 0
-  bring down (1) → 0 0 0 1
-  bring down (1) → 0 0 1 1
-  bring down (1) → 0 1 1 1
-  bring down (0) → 1 1 1 0
-  
-  1 1 1 0 ⊕ 1 1 0 1 = 0 0 1 1
-  bring down (0) → 0 1 1 0
-  bring down (0) → 1 1 0 0
-  bring down (0) → 1 0 0 0
-  bring down (1) → 0 0 0 1
-  
-  Final remainder = 0 0 1 (3 bits)
+Remainder = 1 0 1   (≠ 0)  →  error detected, frame discarded
 ```
 
-Wait — I'm getting `001` here too which would mean the error isn't detected. Let me redo this more carefully because my mental long division is drifting.
+✅ **Answer:**
+- CRC bits = `000`; transmitted codeword = `01011100000`.
+- Leftmost-bit flip → received codeword `11011100000` → receiver gets remainder `101` ≠ 0 → error detected.
 
-**Cleaner method:** When a single bit at position k is flipped, the syndrome (received remainder) is `x^k mod G(x)`. As long as that's nonzero, the error IS detected.
+### 🔑 Key insight
+Any single-bit flip at position k changes the received remainder by $x^k \bmod G(x)$. As long as G(x) has the term `1` (i.e., the constant term is nonzero) and degree ≥ 1, a single $x^k$ on its own is **never** a multiple of G(x), so the syndrome is always nonzero → **all single-bit errors are detected**.
 
-For G = `1101` (degree 3), the polynomial $x^k \mod G$ for any single-bit error at any position k from 0 to 10 is **never zero** (because G has degree 3 and $x^k$ for k < degree-of-codeword can't be a multiple of G unless k ≥ 3 AND the multiplication result fits — but a single $x^k$ term alone is never divisible by a 4-term polynomial like $x^3 + x^2 + 1$).
-
-✅ **Conclusion:** A 1-bit flip is **always detected** by any CRC whose generator has degree ≥ 1 and contains the constant term `1`.
-
-So for Part (b): the receiver computes a **non-zero remainder** when checking the corrupted codeword `11011100001`, which signals the error. Frame discarded.
-
-✅ **Answer:** CRC bits = `001` (or whatever your hand calculation gives — re-verify by mod-2 division). Transmitted = `01011100001`. Single-bit flip → non-zero remainder at receiver → error detected.
-
-> **Practical tip for the exam:** Show the division work cleanly. Examiners care about the **method**, not just the final 3 bits. Even if your remainder is slightly off due to arithmetic slips, methodology marks count.
+> **Generator polynomial G(x):** the agreed divisor used for CRC; both sender and receiver must use the same one.
+> **Syndrome:** the remainder the receiver computes after dividing the received codeword by G(x). Zero → assume no error; nonzero → error detected.
 
 ---
 
@@ -321,6 +272,9 @@ Receiver adds all 4 data words + checksum:
 ```
 
 One's complement of `1111` = `0000` → ✓ no error.
+
+> **One's complement (of an n-bit number):** flip every bit. Used so that "subtraction" can be expressed as addition + bit-flip — that's why the receiver's check is "sum everything; result should be all-zeros after flipping."
+> **Carry-around (end-around carry):** when an n-bit one's-complement addition overflows, the carry bit is added back into the LSB. That's what makes the operation closed within n bits.
 
 ---
 
@@ -394,7 +348,7 @@ So:
 | Q | Topic | Key result |
 |---|---|---|
 | 1 | CRC encoding | Codeword = `11100011011`; flipped bit → non-zero remainder = detected |
-| 2 | CRC detection | Single-bit flip ALWAYS detected by any decent CRC |
+| 2 | CRC encoding + detection | CRC = `000`; codeword = `01011100000`; flipped-bit syndrome = `101` ≠ 0 → detected |
 | 3 | Internet checksum | Checksum of `1001 1100 1010 0011` = `1011` |
 | 4 | Bytes overhead | Circuits beat packets in bytes when file ≥ 86 KB |
 
@@ -428,4 +382,4 @@ So:
 
 ---
 
-If your CRC division gave a slightly different remainder (mine in Q2 was approximate), redo the division carefully — the **method** is what matters. Send Tutorial 5+6 next when ready.
+If your CRC division gives a different remainder, redo the long-division carefully (or verify with the polynomial-arithmetic shortcut shown in Q2's sanity check) — the **method** matters more than the final 3 bits.

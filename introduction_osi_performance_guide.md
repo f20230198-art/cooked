@@ -72,7 +72,7 @@ A **node** = anything that can send/receive data: computer, printer, phone, rout
 
 ## 3. Why We Need Computer Networks (📑 Slides 6–10)
 
-5 main reasons:
+6 main reasons:
 
 | Use | Example |
 |---|---|
@@ -579,7 +579,7 @@ There are **four** kinds of address — one for each major layer:
 
 > **Physical addresses change hop-by-hop. Logical and port addresses stay the same end-to-end.**
 
-This is the same insight as Chapter 3 (MAC vs IP routing across LANs).
+You'll see this in detail in Chapter 3 (MAC vs IP routing across LANs).
 
 ### MAC address structure
 
@@ -845,7 +845,9 @@ $$= 5750 + 99{,}900 = 105{,}650 \text{ ms} \approx \mathbf{105.8 \text{ s}}$$
 
 $$T_{trans} = \frac{1024}{10^8} = 10.24 \times 10^{-6} \text{ s} = \mathbf{10.24\,\mu s}$$
 
-(Slide says 1.024 µs, but the math gives 10.24 µs — be careful with the 100 Mbps = 10⁸ conversion.)
+⚠️ **Slide says 1.024 µs — that's a typo on the slide.** The correct answer is **10.24 µs** because 100 Mbps = 10⁸ bps (not 10⁹). Always double-check the unit conversion.
+
+> **Bandwidth:** the maximum bit rate a link can carry, measured in bits per second (bps). 1 Mbps = 10⁶ bps; 1 Gbps = 10⁹ bps.
 
 ---
 
@@ -902,7 +904,7 @@ $$T_{trans} = \frac{1024}{10^8} = 10.24 \times 10^{-6} \text{ s} = \mathbf{10.24
 │  • 1 KB = 1024 B = 8192 bits                                 │
 │  • 1 MB = 1024 × 1024 B                                      │
 │  • 1 Mbps = 10⁶ bps;  1 Gbps = 10⁹ bps                      │
-│  • Speed in cable ≈ 2 × 10⁸ m/s                             │
+│  • Speed in cable ≈ 2–2.3 × 10⁸ m/s; fiber ≈ 2 × 10⁸ m/s    │
 └─────────────────────────────────────────────────────────────┘
 ```
 

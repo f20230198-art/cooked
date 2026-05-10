@@ -124,6 +124,10 @@ So half the bandwidth is wasted on headers! This shows why **small messages are 
 ### Real-world verdict
 Neither is great alone. **TCP combines the best of both** with cumulative ACKs + window-based sending. For huge files: per-packet ACKs are essential (otherwise one bit error = restart everything).
 
+> **ACK (acknowledgement):** a small reply packet from the receiver telling the sender "I got your data."
+> **Cumulative ACK:** one ACK that confirms all packets up to a sequence number (used by TCP).
+> **RTT (Round-Trip Time):** the time for a packet to go to the receiver and the ACK to come back.
+
 ---
 
 ## Q3. Which OSI Layer Header Has the Destination Network Address?
@@ -311,6 +315,10 @@ After Physical (L1):     010110100110... (bits on wire)
 4. Check switch/router (L1/L2/L3)
 
 If you couldn't even reach an IP on your **own subnet**, the issue is local — not somewhere on the Internet.
+
+> **Subnet:** a contiguous block of IP addresses sharing a common prefix; devices in the same subnet can talk directly without going through a router.
+> **Default gateway:** the router IP that your host sends packets to whenever the destination IP is *outside* your subnet.
+> **Ping:** a diagnostic tool that sends ICMP Echo Request packets and waits for Echo Reply — used to test whether a host is reachable.
 
 ✅ **Answer: Physical Layer (Layer 1)** — most likely a cable, NIC, or local connectivity problem (could also be Layer 2 / VLAN issue)
 
@@ -536,6 +544,11 @@ C: ccc ccc ccc     →
 ```
 
 If line A is silent, its slot **is still sent (as zeros or junk)** — that's the rigidity of synchronous TDM.
+
+> **TDM (Time Division Multiplexing):** sharing one link by giving each input a fixed time slot in turn.
+> **Synchronous TDM:** slots are pre-assigned to inputs and always transmitted, even if the input has no data.
+> **Statistical TDM:** slots are assigned on demand to whichever input has data — more efficient, but each slot must carry an address tag.
+> **Framing bit:** an extra bit at the start of each TDM frame so the receiver can stay aligned with slot boundaries.
 
 ---
 

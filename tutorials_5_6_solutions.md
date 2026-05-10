@@ -34,6 +34,10 @@ $$T_{fr} \geq 2 \cdot T_p \quad \Rightarrow \quad L_{min} = 2 \cdot T_p \cdot R$
 ### Concept E — Contention Slot
 A "contention slot" in CSMA/CD = the **round-trip propagation time** = $2 \cdot T_p$. This is the worst-case time to detect a collision.
 
+> **Jam signal:** a 48-bit garbage pattern an Ethernet station sends right after detecting a collision, to make sure every other station also sees the collision.
+> **Repeater:** a Layer-1 device that regenerates a weak signal so cables can run longer; it adds a small processing delay (typically ~10 µs) but does NOT separate collision domains.
+> **Slot time:** the unit of waiting in binary exponential backoff. For Ethernet, slot time = 51.2 µs = 512 bit-times at 10 Mbps.
+
 ### Concept F — CSMA/CD Efficiency
 $$E = \frac{1}{1 + 5B}$$
 where $B = t/D$ (avg propagation / avg transmission delay)
@@ -128,6 +132,10 @@ Maximum at G = 0.5 (= 500 fps offered) → **184 fps actually delivered** = 18.4
 
 ### 🔑 Insight
 Slotted ALOHA peaks at G = 1 (= 1000 fps offered) → **368 fps** = 36.8% efficiency = **2× better than Pure ALOHA**.
+
+> **G (offered load):** average number of frames *attempted* per frame-time, including retransmissions.
+> **S (throughput):** average number of frames *successfully delivered* per frame-time.
+> **fps:** frames per second.
 
 ✅ **Answers:** (a) **368 fps (max!)**, (b) 303 fps, (c) 195 fps
 

@@ -127,6 +127,11 @@ Even at 58 Mbps physical rate, MAC throughput is only **~75%** because of:
 
 This is why "advertised speed" of WiFi is always more than what you actually get.
 
+> **DIFS (Distributed Inter-Frame Space):** the longer wait time a station observes before *starting* a new transmission — a low-priority gap.
+> **SIFS (Short Inter-Frame Space):** the shorter gap used *between* tightly-coupled frames in one exchange (RTS↔CTS, DATA↔ACK). Because SIFS < DIFS, an ACK always wins the channel before any new frame can grab it.
+> **MAC payload:** the user data carried inside one MAC frame, *excluding* MAC headers/trailers.
+> **Physical data rate:** the raw bit rate of the radio link before any MAC overhead is subtracted.
+
 ---
 
 ## Q2. Hidden Terminal & NAV — Which Station is Closer to A?
@@ -167,6 +172,10 @@ So:
 
 ### 🔑 Key insight
 RTS/CTS is brilliant because it lets stations infer their relative position based on which control frame they hear first. C is "hidden from A" → can't hear A's RTS → relies on B's CTS to know when to stay quiet.
+
+> **RTS (Request To Send) / CTS (Clear To Send):** tiny control frames exchanged before data so that nodes near the *receiver* (which may not be able to hear the sender) learn to stay silent.
+> **NAV (Network Allocation Vector):** a virtual carrier-sense timer each station maintains. When a station hears RTS or CTS, it reads the Duration field and waits that long before attempting to transmit, even without sensing the medium.
+> **Hidden terminal:** a node whose transmissions can't be heard by some sender but *do* collide at the sender's intended receiver.
 
 ---
 
@@ -600,6 +609,11 @@ The destination computer (Mac2Switch2) replies with **unicast** ARP.
 
 ✅ **Key:** ARP request is broadcast; ARP reply is unicast. VLAN tag is added on trunk links between switches and stripped before delivering to hosts.
 
+> **VLAN (Virtual LAN):** a software-defined broadcast domain — one physical switch can host several VLANs that behave like separate switches.
+> **Trunk port:** a switch port configured to carry frames from multiple VLANs at once. Frames on a trunk are tagged so the receiving switch knows which VLAN each frame belongs to.
+> **Access port:** a switch port belonging to exactly one VLAN. Frames here are *untagged* (the host doesn't know about VLANs).
+> **802.1Q tag:** the 4-byte field inserted between the source-MAC and EtherType fields that carries the VLAN ID (12 bits → up to 4096 VLANs) and a 3-bit priority.
+
 ---
 
 ## Q11. Three Subnets, Two Routers — Full ARP Trace (Kurose Fig 5.33)
@@ -697,6 +711,10 @@ So total: 1 ARP exchange (E to Router2), then the data frame is forwarded all th
 - **MAC src/dst change at every router hop**
 - ARP is needed at every hop where the destination MAC isn't cached
 - ARP only resolves IPs **on the same subnet**
+
+> **ARP cache / ARP table:** a small per-host table mapping known IP addresses to MAC addresses, with a TTL (~20 minutes). Cuts down on repeated broadcasts.
+> **Default gateway:** the router IP a host sends to when the destination is on a different subnet — and therefore the IP a host ARPs for in that case (instead of ARPing for the final destination).
+> **Routing table:** a per-router lookup table that tells the router which outbound interface to use for each destination IP prefix.
 
 ---
 

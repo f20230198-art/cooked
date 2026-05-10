@@ -8,7 +8,7 @@
 
 The **Link Layer** is responsible for getting bits from one device to the *next* device on the wire/wireless link (one hop at a time). Two big jobs:
 
-1. **Frame the data** + handle access to the medium (we covered this in Chapter 1: ALOHA, CSMA, etc.)
+1. **Frame the data** + handle access to the medium (medium access protocols like ALOHA, CSMA, etc. — these are covered in Chapter 5)
 2. **Make sure the bits arrive correctly** — detect (and sometimes fix) errors caused by noise on the wire
 
 This chapter focuses on job #2: **error detection and correction**.
@@ -66,7 +66,7 @@ The link layer provides several services. Know all of them:
 ### (a) Framing & Link Access
 - Encapsulate datagram into a frame (add header + trailer)
 - Use **MAC addresses** in the frame header for source/destination
-- ⚠ MAC address ≠ IP address (this was Chapter 3)
+- ⚠ MAC address ≠ IP address (we'll cover this fully in Chapter 3)
 
 ### (b) Reliable Delivery (between adjacent nodes)
 - Seldom used on wired links (already low error rate — handle errors at higher layers)
