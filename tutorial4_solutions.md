@@ -343,6 +343,109 @@ So:
 
 ---
 
+## Q5. IPv4 Header Checksum, TTL & Fragment-Offset Corruption
+
+> Five-node path N1→N2→N3→N4→N5. Node 1 builds the IPv4 header below (bold values are initialized; checksum is to be computed). All answers in **hex**.
+>
+> ```
+> Version=4  IHL=4  ToS=0      Total Length=24
+>      Identification=1024    Flags=0  Fragment Offset=0
+>      TTL=5      Protocol=6        Header Checksum=?
+>          Source Address = 20.7.8.7
+>          Destination Address = 47.5.5.8
+> ```
+>
+> (a) Compute the header checksum at Node 1.
+> (b) Packet arrives error-free at Node 3. Between N3 and N4 the **LSB of the fragment-offset field** flips. Show how Node 4 detects this.
+> (c) For a longer path N1→N2→N3→N4→N5→N6 with no errors, what happens at Node 6?
+
+### Setup — header as ten 16-bit words
+
+The IPv4 header is 20 bytes = ten 16-bit words. Field-pack the given values (20 dec = 0x14, 47 dec = 0x2F):
+
+| # | Field(s) | Hex word |
+|---|---|---|
+| 1 | Version, IHL, ToS | **`4500`** |
+| 2 | Total Length (24) | **`0018`** |
+| 3 | Identification (1024) | **`0400`** |
+| 4 | Flags + Fragment Offset | **`0000`** |
+| 5 | TTL (5), Protocol (6) | **`0506`** |
+| 6 | Header Checksum | `????` (treat as 0 while computing) |
+| 7 | Src high (20.7) | **`1407`** |
+| 8 | Src low (8.7) | **`0807`** |
+| 9 | Dst high (47.5) | **`2F05`** |
+| 10 | Dst low (5.8) | **`0508`** |
+
+### Part (a) — Compute Node 1's checksum
+
+**Step 1:** One's-complement sum of the 9 non-checksum words.
+
+```
+4500 + 0018 = 4518
+4518 + 0400 = 4918
+4918 + 0000 = 4918
+4918 + 0506 = 4E1E
+4E1E + 1407 = 6225
+6225 + 0807 = 6A2C
+6A2C + 2F05 = 9931
+9931 + 0508 = 9E39      ← no 17-bit carry anywhere
+```
+
+Sum = **`0x9E39`**.
+
+**Step 2:** Take the one's complement (flip all 16 bits).
+
+```
+9E39 = 1001 1110 0011 1001
+~    = 0110 0001 1100 0110  = 0x61C6
+```
+
+✅ **Answer (a): Header checksum = `0x61C6`**
+
+### Part (b) — Node 4 detects a flipped LSB in Fragment Offset
+
+After N3, the Flags+FragOffset word changes from `0000` → `0001` (LSB flipped).
+
+Node 4 sums **all ten** words (including the received checksum) and checks whether the complement is zero.
+
+- Sum of 9 non-checksum words (with the bit flip): `9E39 + 1 = 9E3A`
+- Add the received checksum: `9E3A + 61C6 = 1 0000` → wrap carry → **`0001`**
+- One's complement: `~0001 = ` **`0xFFFE`** ≠ 0 → **ERROR**
+
+(For comparison: with no errors, the same calculation yields `9E39 + 61C6 = FFFF` → complement = 0 → OK.)
+
+✅ **Answer (b):** The complement of Node 4's sum is `0xFFFE` instead of `0x0000`, so the checksum check fails. **Node 4 silently discards the packet.** (IP itself does not retransmit; recovery is left to higher layers like TCP.)
+
+### Part (c) — Packet reaches Node 6
+
+Every router that *forwards* an IPv4 packet decrements **TTL by 1** and recomputes the checksum. Starting from TTL = 5 at N1:
+
+```
+N1 sends with TTL=5
+N2 → decrement → TTL=4, forward
+N3 → decrement → TTL=3, forward
+N4 → decrement → TTL=2, forward
+N5 → decrement → TTL=1, forward
+N6 → decrement → TTL=0  ← STOP
+```
+
+When a router's decrement produces TTL = 0, the packet **must be discarded** and the router sends an **ICMP "Time Exceeded" (Type 11)** message back to the source IP `20.7.8.7`.
+
+✅ **Answer (c):** Node 6 drops the packet (TTL expired) and sends an **ICMP Time Exceeded** message back to source `20.7.8.7`. The packet never reaches destination `47.5.5.8`.
+
+### 🔑 Key insights
+
+- The IPv4 checksum covers **only the header**, not the payload. Recomputed at every hop because TTL changes each time.
+- A single bit flip anywhere in the header almost always changes the sum, so the checksum reliably catches single-bit header errors.
+- TTL is the loop-prevention mechanism. `traceroute` exploits the ICMP Time Exceeded reply by sending probes with increasing TTLs (1, 2, 3, …) to reveal each hop along the path.
+
+> **TTL (Time To Live):** an 8-bit hop counter in the IPv4 header. Every forwarding router decrements it; when it hits 0 the packet is dropped to prevent infinite routing loops.
+> **ICMP Time Exceeded (Type 11):** the diagnostic message a router returns to the source when it drops a packet because TTL reached 0.
+> **Fragment Offset:** a 13-bit field saying where this fragment's data sits inside the original (pre-fragmentation) datagram, in units of 8 bytes.
+> **IHL (Internet Header Length):** the header length in 32-bit words. IHL = 4 ⇒ 20-byte header (no options).
+
+---
+
 ## 📊 Summary
 
 | Q | Topic | Key result |
@@ -351,6 +454,7 @@ So:
 | 2 | CRC encoding + detection | CRC = `000`; codeword = `01011100000`; flipped-bit syndrome = `101` ≠ 0 → detected |
 | 3 | Internet checksum | Checksum of `1001 1100 1010 0011` = `1011` |
 | 4 | Bytes overhead | Circuits beat packets in bytes when file ≥ 86 KB |
+| 5 | IPv4 header checksum + TTL | (a) `0x61C6` (b) sum complement = `0xFFFE` → drop (c) TTL=0 at N6 → ICMP Time Exceeded |
 
 ---
 
