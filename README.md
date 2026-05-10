@@ -24,7 +24,7 @@ Plain-English explanations, ASCII diagrams, formulas, and worked numerical probl
 | [tutorials_2_3_solutions.md](tutorials_2_3_solutions.md) | Layered protocols, encapsulation, store-and-forward, cut-through, TDM |
 | [tutorial4_solutions.md](tutorial4_solutions.md) | CRC encoding/decoding, Internet checksum, circuit vs packet bytes |
 | [tutorials_5_6_solutions.md](tutorials_5_6_solutions.md) | ALOHA throughput, CSMA/CD min frame, backoff, collision timing |
-| [tutorial7_wireless_switches_arp.md](tutorial7_wireless_switches_arp.md) | 802.11 DCF, NAV, MACA, switch self-learning, cross-LAN ARP |
+| [tutorials_7_8_solutions.md](tutorials_7_8_solutions.md) | 802.11 DCF, NAV, MACA, switch self-learning, cross-LAN ARP, VLAN ARP (T8 reuses T7's Q6–Q11) |
 
 ---
 

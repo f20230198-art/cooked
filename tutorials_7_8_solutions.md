@@ -1,5 +1,7 @@
-# Tutorial 7 — Wireless (802.11/MACA), Switches & ARP
+# Tutorials 7 & 8 — Wireless (802.11/MACA), Switches & ARP
 
+> **Note on Tutorial 8:** Tutorial 8's questions (switch self-learning with hosts A–H, broadcast/collision domain counts, VLAN-tagged ARP across two switches, and three-subnet ARP from Kurose Fig 5.33) are the same set as Q6–Q11 below. Both tutorials are solved together in this file.
+>
 > **Topics:** 802.11 DCF timeline, NAV, RTS/CTS, hidden/exposed terminals, switch self-learning, broadcast/collision domains, VLANs, ARP across LANs
 > **Reference guides:**
 > - [multiple_access_protocols_guide.md](multiple_access_protocols_guide.md) (CSMA/CA, MACA, hidden terminal)
