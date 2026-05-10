@@ -814,22 +814,28 @@ $$T_{total} = 160 + 166 + 122{,}800 = 123{,}126 \text{ ms} \approx \mathbf{123.1
 
 > 1000-KB file, RTT = 100 ms, packet = 1 KB, 2×RTT handshake, BW = 1.5 Mbps.
 
+**Setup:**
+- Handshake = 2 × RTT = **200 ms**
+- File bits = 1000 × 1024 × 8 = 8,192,000 bits
+- Transmission time = 8,192,000 / 1,500,000 ≈ **5500 ms** (slide rounds)
+- One-way propagation = RTT/2 = **50 ms**
+
 **Part (a) — Continuous send:**
 
-- Handshake = 200 ms
-- File bits = 1000 × 1024 × 8 = 8,192,000 bits
-- Transmission = 8,192,000 / 1,500,000 ≈ 5460 ms ≈ 5500 ms (slide rounds)
-- Propagation = 50 ms
+$$T_{total} = T_{handshake} + T_{transmission} + T_{propagation}$$
+$$= 200 + 5500 + 50 = 5750 \text{ ms} \approx \mathbf{5.7 \text{ s}}$$
 
-$$T_{total} \approx 200 + 5500 + 200 = 5700 \text{ ms} = \mathbf{5.7 \text{ s}}$$
+(Slide rounds to 5.7 s)
 
-**Part (b) — One RTT after each packet:**
+**Part (b) — One RTT wait after each packet:**
 
-- Number of packets = 1000
-- Extra waits = 999 × 100 = 99,900 ms ≈ 100,000 ms
-- $T_{total}$ = 200 + 5700 + (1000−1) × 100 = **105.8 s**
+- Number of packets = 1000 KB / 1 KB = **1000 packets**
+- Extra RTT waits between packets = (1000 − 1) × 100 = **99,900 ms**
 
-✅ **Answers:** (a) 5.7 s, (b) 105.8 s
+$$T_{total} = T_{(a)} + (N-1) \times \text{RTT}$$
+$$= 5750 + 99{,}900 = 105{,}650 \text{ ms} \approx \mathbf{105.8 \text{ s}}$$
+
+✅ **Answers:** (a) **5.7 s**, (b) **105.8 s**
 
 ---
 
